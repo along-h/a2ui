@@ -1,0 +1,12 @@
+{
+  "name": "a2ui",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.0.6",
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "dev:web": "pnpm --filter a2ui-playground dev",
+    "dev:server": "pnpm --filter a2ui-playground-server dev"
+  }
+}
