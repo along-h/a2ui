@@ -1,0 +1,6 @@
+{
+  "spec": "test/**/*.spec.ts",
+  "import": "tsx",
+  "reporter": "spec",
+  "timeout": 5000
+}

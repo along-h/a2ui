@@ -9,9 +9,18 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
+    "chai": "^4.5.0",
+    "mocha": "^10.8.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }
 }

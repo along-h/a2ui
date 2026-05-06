@@ -4,7 +4,13 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    // 与 vite.config.ts 中的 alias 保持一致，让 tsc 也能解析源码路径
+    "paths": {
+      "a2ui-core": ["../../packages/a2ui-core/src/index.ts"],
+      "a2ui-react": ["../../packages/a2ui-react/src/index.ts"]
+    }
   },
   "include": [
     "src",
