@@ -2,6 +2,7 @@ import { createStore, type StoreApi } from "zustand/vanilla";
 
 import type {
   A2UiError,
+  A2UiRenderMap,
   A2UiStoreData,
   CreateSurfaceInput,
   HydrateNode,
@@ -16,9 +17,11 @@ const initialStoreData = (): A2UiStoreData => ({
   surfaceMap: {},
   hydrateNodeMap: {},
   errorMap: {},
+  renderMap: {},
 });
 
 export interface A2UiStoreState extends A2UiStoreData {
+  setRenderMap: (renderMap: A2UiRenderMap) => void;
   createSurface: (input: CreateSurfaceInput) => Surface;
   updateSurface: (surfaceId: string, input: UpdateSurfaceInput) => Surface;
   getSurface: (surfaceId: string) => Surface | undefined;
@@ -46,11 +49,14 @@ export function createA2UiStore(
   return createStore<A2UiStoreState>()((set, get) => ({
     ...initialStoreData(),
     ...initialData,
+    setRenderMap: (renderMap) => {
+      set({ renderMap });
+    },
     createSurface: (input) => {
       const surface: Surface = {
         surfaceId: input.surfaceId,
         beginRender: input.beginRender ?? false,
-        rootNodeId: input.rootNodeId,
+        rootNode: input.rootNode,
       };
 
       set((state) => ({
@@ -116,7 +122,7 @@ export function createA2UiStore(
 
       const node: HydrateNode = {
         id: input.id,
-        vnode: input.vnode,
+        _vnode: input._vnode,
         ownerSurfaceId: input.ownerSurfaceId,
         protocol: input.protocol,
       };
@@ -126,15 +132,16 @@ export function createA2UiStore(
           ...state.hydrateNodeMap,
           [node.id]: node,
         },
-        surfaceMap: surface.rootNodeId
-          ? state.surfaceMap
-          : {
-              ...state.surfaceMap,
-              [surface.surfaceId]: {
-                ...surface,
-                rootNodeId: node.id,
-              },
-            },
+        surfaceMap:
+          !surface.rootNode || surface.rootNode.id === node.id
+            ? {
+                ...state.surfaceMap,
+                [surface.surfaceId]: {
+                  ...surface,
+                  rootNode: node,
+                },
+              }
+            : state.surfaceMap,
       }));
 
       return node;
@@ -153,12 +160,12 @@ export function createA2UiStore(
 
         const ownerSurface = state.surfaceMap[targetNode.ownerSurfaceId];
         const surfaceMap =
-          ownerSurface?.rootNodeId === nodeId
+          ownerSurface?.rootNode?.id === nodeId
             ? {
                 ...state.surfaceMap,
                 [ownerSurface.surfaceId]: {
                   ...ownerSurface,
-                  rootNodeId: undefined,
+                  rootNode: undefined,
                 },
               }
             : state.surfaceMap;

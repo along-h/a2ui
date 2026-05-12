@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "mocha"
+    "test": "mocha",
+    "test:parser": "mocha --no-config --require tsx --extension ts test/parser.spec.ts"
   },
   "dependencies": {
     "zustand": "^5.0.8"

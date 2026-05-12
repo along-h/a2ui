@@ -1,4 +1,5 @@
 export * from "./parser";
+export * from "./mock";
 export * from "./store";
 export * from "./treebuilder";
 export * from "./vnode";

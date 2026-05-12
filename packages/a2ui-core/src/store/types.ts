@@ -1,12 +1,16 @@
+export type A2UiRenderFunction = (props: Record<string, unknown>) => unknown;
+
+export type A2UiRenderMap = Record<string, A2UiRenderFunction>;
+
 export interface Surface {
   surfaceId: string;
   beginRender: boolean;
-  rootNodeId?: string;
+  rootNode?: HydrateNode;
 }
 
 export interface HydrateNode {
   id: string;
-  vnode: unknown;
+  _vnode: unknown;
   ownerSurfaceId: string;
   protocol: string;
 }
@@ -25,17 +29,18 @@ export interface A2UiStoreData {
   surfaceMap: Record<string, Surface>;
   hydrateNodeMap: Record<string, HydrateNode>;
   errorMap: Record<string, A2UiError>;
+  renderMap: A2UiRenderMap;
 }
 
 export interface CreateSurfaceInput {
   surfaceId: string;
   beginRender?: boolean;
-  rootNodeId?: string;
+  rootNode?: HydrateNode;
 }
 
 export interface UpdateSurfaceInput {
   beginRender?: boolean;
-  rootNodeId?: string;
+  rootNode?: HydrateNode;
 }
 
 export interface RemoveSurfaceOptions {
@@ -44,7 +49,7 @@ export interface RemoveSurfaceOptions {
 
 export interface UpsertHydrateNodeInput {
   id: string;
-  vnode: unknown;
+  _vnode: unknown;
   ownerSurfaceId: string;
   protocol: string;
 }
